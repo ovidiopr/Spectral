@@ -1,8 +1,11 @@
-program Spectral;
+program spectral;
 
 {$mode objfpc}{$H+}
 
 uses
+  {$IFDEF UNIX}
+  cthreads,
+  {$ENDIF}
   Forms, Interfaces, tachartlazaruspkg,
   SysUtils, Messages, uMain, URangeDlg,
   UConfigDlg, USaveSpectraDlg, uAbout,

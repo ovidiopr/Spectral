@@ -4,6 +4,9 @@ BUILD          := build
 PKGROOT        := $(APP)_$(VERSION)
 DMG_STAGING    := dmg_staging
 
+SEABREEZE_DIR  := SeaBreeze/lib
+LIB_NAME       := libseabreeze.dylib
+
 UNAME_M        := $(shell uname -m)
 
 LAZBUILD       := lazbuild
@@ -103,8 +106,13 @@ build_dmg: clean build
 	cp $(BUILDDIR)/$(APP) $(APP_BUNDLE)/Contents/MacOS/$(APP)
 	chmod 755 $(APP_BUNDLE)/Contents/MacOS/$(APP)
 
+	# Copy the library
+	cp $(SEABREEZE_DIR)/$(LIB_NAME) $(APP_BUNDLE)/Contents/MacOS/
+	install_name_tool -id "@executable_path/../MacOS/$(LIB_NAME)" $(APP_BUNDLE)/Contents/MacOS/$(LIB_NAME)
+	codesign -s - --force $(APP_BUNDLE)/Contents/MacOS/$(LIB_NAME)
+
 	# Copy the Icon into the App Bundle
-	cp spectral.icns $(APP_BUNDLE)/Contents/Resources/spectral.icns
+	cp icons/spectral.icns $(APP_BUNDLE)/Contents/Resources/spectral.icns
 
 	# Generate Info.plist (Added CFBundleIconFile)
 	@echo '<?xml version="1.0" encoding="UTF-8"?>' > $(APP_BUNDLE)/Contents/Info.plist
@@ -120,7 +128,7 @@ build_dmg: clean build
 	@echo '</dict></plist>' >> $(APP_BUNDLE)/Contents/Info.plist
 
 	# Prepare Volume Icon (The icon of the DMG disk itself)
-	cp spectral.icns $(STAGING)/.VolumeIcon.icns
+	cp icons/spectral.icns $(STAGING)/.VolumeIcon.icns
 	# Set the 'Custom Icon' bit on the staging folder
 	SetFile -a C $(STAGING)
 

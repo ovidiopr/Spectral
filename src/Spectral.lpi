@@ -131,7 +131,7 @@
     </RequiredPackages>
     <Units Count="11">
       <Unit0>
-        <Filename Value="Spectral.pas"/>
+        <Filename Value="spectral.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit0>
       <Unit1>
@@ -220,6 +220,7 @@
     <Linking>
       <Debugging>
         <GenerateDebugInfo Value="False"/>
+        <DebugInfoType Value="dsDwarf3"/>
         <StripSymbols Value="True"/>
       </Debugging>
       <LinkSmart Value="True"/>
