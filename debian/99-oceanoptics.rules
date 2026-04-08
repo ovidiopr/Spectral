@@ -1,0 +1,15 @@
+# Ocean Optics Spectrometers udev rules
+# Access is granted to the 'plugdev' group. 
+# You can also use MODE="0666" to allow all users.
+
+SUBSYSTEM=="usb", ATTRS{idVendor}=="2713", MODE="0666", GROUP="plugdev"
+
+# Specific rules for common devices if the VID-only match is too broad
+# USB2000+
+ATTRS{idVendor}=="2713", ATTRS{idProduct}=="0c10", MODE="0666", GROUP="plugdev"
+# HR4000
+ATTRS{idVendor}=="2713", ATTRS{idProduct}=="0c11", MODE="0666", GROUP="plugdev"
+# Maya2000 Pro
+ATTRS{idVendor}=="2713", ATTRS{idProduct}=="0c20", MODE="0666", GROUP="plugdev"
+# Ocean FX
+ATTRS{idVendor}=="2713", ATTRS{idProduct}=="0c60", MODE="0666", GROUP="plugdev"

@@ -1,0 +1,665 @@
+object ConfigurationDlg: TConfigurationDlg
+  Left = 475
+  Height = 383
+  Top = 212
+  Width = 383
+  BorderStyle = bsDialog
+  Caption = 'Spectrometer configuration'
+  ClientHeight = 383
+  ClientWidth = 383
+  Position = poMainFormCenter
+  LCLVersion = '4.4.0.0'
+  object ButtonPanel: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 343
+    Width = 371
+    OKButton.Name = 'OKButton'
+    OKButton.Caption = '&Acept'
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.Caption = '&Cancel'
+    TabOrder = 1
+    ShowButtons = [pbOK, pbCancel]
+  end
+  object PageControl: TPageControl
+    Left = 0
+    Height = 337
+    Top = 0
+    Width = 383
+    ActivePage = tsAcquisition
+    Align = alClient
+    MultiLine = True
+    Options = [nboMultiLine]
+    TabIndex = 0
+    TabOrder = 0
+    object tsAcquisition: TTabSheet
+      Caption = 'Acquisition'
+      ClientHeight = 289
+      ClientWidth = 375
+      object gbAcquisition: TGroupBox
+        Left = 0
+        Height = 289
+        Top = 0
+        Width = 375
+        Align = alClient
+        Caption = 'Acquisition features'
+        ClientHeight = 269
+        ClientWidth = 371
+        TabOrder = 0
+        object lblIntTime: TLabel
+          Left = 19
+          Height = 15
+          Top = 12
+          Width = 88
+          Caption = 'Integration time:'
+          ParentColor = False
+        end
+        object seIntTime: TFloatSpinEdit
+          Left = 116
+          Height = 23
+          Top = 8
+          Width = 141
+          Alignment = taRightJustify
+          Anchors = [akTop, akLeft, akRight]
+          DecimalPlaces = 3
+          TabOrder = 0
+          Value = 1
+        end
+        object rbMS: TRadioButton
+          Left = 265
+          Height = 19
+          Top = 10
+          Width = 34
+          Anchors = [akTop, akRight]
+          Caption = 'ms'
+          Checked = True
+          TabOrder = 1
+          TabStop = True
+          OnChange = rbMSChange
+        end
+        object rbS: TRadioButton
+          Left = 305
+          Height = 19
+          Top = 10
+          Width = 23
+          Anchors = [akTop, akRight]
+          Caption = 's'
+          TabOrder = 2
+          OnChange = rbSChange
+        end
+        object lblBoxcar: TLabel
+          Left = 36
+          Height = 15
+          Top = 76
+          Width = 71
+          Caption = 'Boxcar width:'
+          ParentColor = False
+        end
+        object seBoxcar: TSpinEdit
+          Left = 116
+          Height = 23
+          Top = 72
+          Width = 141
+          Alignment = taRightJustify
+          Anchors = [akTop, akLeft, akRight]
+          TabOrder = 3
+        end
+        object lblNoScans: TLabel
+          Left = 16
+          Height = 15
+          Top = 44
+          Width = 91
+          Caption = 'Scans to average:'
+          ParentColor = False
+        end
+        object seNoScans: TSpinEdit
+          Left = 116
+          Height = 23
+          Top = 40
+          Width = 141
+          Alignment = taRightJustify
+          Anchors = [akTop, akLeft, akRight]
+          MaxValue = 1000
+          MinValue = 1
+          TabOrder = 4
+          Value = 1
+        end
+        object chbStrobe: TCheckBox
+          Left = 116
+          Height = 19
+          Top = 107
+          Width = 125
+          Caption = 'Strobe/Lamp enable'
+          TabOrder = 5
+        end
+        object chbDark: TCheckBox
+          Left = 116
+          Height = 19
+          Top = 136
+          Width = 139
+          Caption = 'Electric dark correction'
+          TabOrder = 6
+        end
+        object btnApplyAdqChanges: TButton
+          Left = 116
+          Height = 25
+          Top = 165
+          Width = 141
+          Anchors = [akTop, akLeft, akRight]
+          Caption = 'Apply changes'
+          TabOrder = 7
+          OnClick = btnApplyAdqChangesClick
+        end
+      end
+    end
+    object tsTrigger: TTabSheet
+      Caption = 'Trigger'
+      ClientHeight = 289
+      ClientWidth = 375
+      object gbTrigger: TGroupBox
+        Left = 0
+        Height = 289
+        Top = 0
+        Width = 375
+        Align = alClient
+        Caption = 'Trigger'
+        ClientHeight = 269
+        ClientWidth = 371
+        TabOrder = 0
+        object lblTrigger: TLabel
+          AnchorSideLeft.Control = gbTrigger
+          AnchorSideTop.Control = cbTriggerMode
+          AnchorSideTop.Side = asrCenter
+          Left = 2
+          Height = 15
+          Top = 6
+          Width = 74
+          BorderSpacing.Around = 2
+          Caption = 'Trigger Mode:'
+        end
+        object cbTriggerMode: TComboBox
+          AnchorSideLeft.Control = lblTrigger
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = gbTrigger
+          AnchorSideRight.Control = gbTrigger
+          AnchorSideRight.Side = asrBottom
+          Left = 78
+          Height = 23
+          Top = 2
+          Width = 291
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Around = 2
+          ItemHeight = 15
+          Items.Strings = (
+            'Normal (Free Run)'
+            'Software Trigger'
+            'External Synchronization'
+            'External Hardware Trigger'
+          )
+          Style = csDropDownList
+          TabOrder = 0
+        end
+      end
+    end
+    object tsBoardTemp: TTabSheet
+      Caption = 'Board temperature'
+      ClientHeight = 289
+      ClientWidth = 375
+      object gbBoardTemp: TGroupBox
+        Left = 0
+        Height = 289
+        Top = 0
+        Width = 375
+        Align = alClient
+        Caption = 'Board temperature'
+        TabOrder = 0
+      end
+    end
+    object tsIrradiance: TTabSheet
+      Caption = 'Irradiance'
+      ClientHeight = 289
+      ClientWidth = 375
+      object gbIrradiance: TGroupBox
+        Left = 0
+        Height = 289
+        Top = 0
+        Width = 375
+        Align = alClient
+        Caption = 'Irradiance'
+        TabOrder = 0
+      end
+    end
+    object tsTEC: TTabSheet
+      Caption = 'TEC'
+      ClientHeight = 289
+      ClientWidth = 375
+      object gbTEC: TGroupBox
+        Left = 0
+        Height = 289
+        Top = 0
+        Width = 375
+        Align = alClient
+        Caption = 'Detector thermo-electric control'
+        ClientHeight = 269
+        ClientWidth = 371
+        TabOrder = 0
+        object gbTECSettings: TGroupBox
+          Left = 8
+          Height = 131
+          Top = 5
+          Width = 358
+          Anchors = [akTop, akLeft, akRight]
+          Caption = 'TEC settings'
+          ClientHeight = 111
+          ClientWidth = 354
+          TabOrder = 0
+          object chbFan: TCheckBox
+            Left = 89
+            Height = 19
+            Top = 0
+            Width = 73
+            Caption = 'Enable fan'
+            TabOrder = 0
+          end
+          object chbTEC: TCheckBox
+            Left = 89
+            Height = 19
+            Top = 25
+            Width = 179
+            Caption = 'Enable thermo-electric control'
+            TabOrder = 1
+          end
+          object lblTemp: TLabel
+            Left = 16
+            Height = 15
+            Top = 54
+            Width = 119
+            Caption = 'Temperature set point:'
+            ParentColor = False
+          end
+          object seTemp: TFloatSpinEdit
+            Left = 144
+            Height = 23
+            Top = 50
+            Width = 125
+            Alignment = taRightJustify
+            Anchors = [akTop, akLeft, akRight]
+            DecimalPlaces = 3
+            MaxValue = 1000
+            MinValue = -300
+            TabOrder = 2
+            Value = -20
+          end
+          object rboC: TRadioButton
+            Left = 274
+            Height = 19
+            Top = 52
+            Width = 31
+            Anchors = [akTop, akRight]
+            Caption = 'ºC'
+            Checked = True
+            TabOrder = 3
+            TabStop = True
+          end
+          object rbK: TRadioButton
+            Left = 309
+            Height = 19
+            Top = 52
+            Width = 25
+            Anchors = [akTop, akRight]
+            Caption = 'K'
+            TabOrder = 4
+          end
+          object btnSaveTEC: TButton
+            Left = 89
+            Height = 25
+            Top = 79
+            Width = 180
+            Anchors = [akTop, akLeft, akRight]
+            Caption = 'Save TEC settings'
+            TabOrder = 5
+          end
+        end
+        object gbDetectorTemp: TGroupBox
+          Left = 8
+          Height = 116
+          Top = 144
+          Width = 358
+          Anchors = [akTop, akLeft, akRight, akBottom]
+          Caption = 'Detector temperature'
+          ClientHeight = 96
+          ClientWidth = 354
+          TabOrder = 1
+          object lblDetectorTemp: TLabel
+            Left = 24
+            Height = 15
+            Top = 8
+            Width = 173
+            Caption = 'Detector temperature: -20.000 ºC'
+            ParentColor = False
+          end
+          object chbTempUpdates: TCheckBox
+            Left = 188
+            Height = 19
+            Top = 34
+            Width = 144
+            Caption = 'Enable periodic updates'
+            TabOrder = 0
+          end
+          object btnUpdateNow: TButton
+            Left = 16
+            Height = 25
+            Top = 31
+            Width = 160
+            Anchors = [akTop, akLeft, akRight]
+            Caption = 'Update now'
+            TabOrder = 1
+          end
+          object chbShowStatusBar: TCheckBox
+            Left = 188
+            Height = 19
+            Top = 66
+            Width = 114
+            Caption = 'Show in status bar'
+            TabOrder = 2
+          end
+          object lblUpdateInterval: TLabel
+            Left = 16
+            Height = 15
+            Top = 68
+            Width = 99
+            Caption = 'Update interval (s):'
+            ParentColor = False
+          end
+          object seUpdateinterval: TSpinEdit
+            Left = 120
+            Height = 23
+            Top = 64
+            Width = 56
+            Anchors = [akTop, akLeft, akRight]
+            MinValue = 1
+            TabOrder = 3
+            Value = 1
+          end
+        end
+      end
+    end
+    object tsWavelength: TTabSheet
+      Caption = 'Wavelength'
+      ClientHeight = 289
+      ClientWidth = 375
+      object bgWavelength: TGroupBox
+        Left = 0
+        Height = 289
+        Top = 0
+        Width = 375
+        Align = alClient
+        Caption = 'Wavelength calibration'
+        ClientHeight = 269
+        ClientWidth = 371
+        TabOrder = 0
+        object vleWavelength: TValueListEditor
+          Left = 0
+          Height = 176
+          Top = 0
+          Width = 371
+          Align = alTop
+          DefaultColWidth = 140
+          RowCount = 2
+          TabOrder = 0
+          TitleCaptions.Strings = (
+            'Term'
+            'Value'
+          )
+          ColWidths = (
+            140
+            210
+          )
+        end
+        object btnResetCal: TBitBtn
+          AnchorSideTop.Control = btnUpdateCal
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = btnUpdateCal
+          Left = 129
+          Height = 25
+          Top = 183
+          Width = 73
+          Anchors = [akTop, akRight]
+          AutoSize = True
+          BorderSpacing.Right = 6
+          Caption = 'Reset'
+          Glyph.Data = {
+            BA030000424DBA0300000000000036000000280000000F0000000F0000000100
+            2000000000008403000064000000640000000000000000000000FFFFFF00FFFF
+            FE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00CD4D02FFFFFFFE00FFFFFE00FFFF
+            FE00FFFFFE00FFFFFE00FFFFFE00FFFFFF00FFFFFF00FFFFFF00FFFFFE00FFFF
+            FE00FFFFFE00FFFFFE00FFFFFE00CD4D02FFCD4D02FFCD4D02FBFFFFFE00FFFF
+            FE00FFFFFE00FFFFFE00FFFFFF00FFFFFF00FFFFFF00FFFFFE00FFFFFE00D263
+            1AFFD05B10FFCF5408FFCD4D02FFCD4D02FFCD4D02FFCD4D02FFFFFFFE00FFFF
+            FE00FFFFFE00FFFFFF00FFFFFF00FFFFFF00FFFFFE00D67430FFD46B24FFD263
+            1AFFD05B11FFCF5308FFCD4D02FFCD4D02FFCD4D02FFFFFFFE00FFFFFE00FFFF
+            FE00FFFFFF00FFFFFF00FFFFFF00DB8748FFD97E3BFFD6742FFFD46B24FFD262
+            1AFFD05B10FFCE5309FFCD4D02FFFFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFF
+            FF00FFFFFF00FFFFFF00DE9155FFDB8749FFD97D3BFFFFFFFE00FFFFFE00D262
+            19FFD05B11FFFFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFF00FFFF
+            FF00FFFFFF00E19C63FFDE9156FFDC8749FFFFFFFE00FFFFFE00D46B24FFFFFF
+            FE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFF00FFFFFF00FFFF
+            FF00E4A671FFE09C64FFDE9155FFFFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFF
+            FE00FFFFFE00CF5309FFCD4D02FFCD4D02FFFFFFFF00FFFFFF00FFFFFF00FFFF
+            FE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00D67430FFFFFFFE00FFFF
+            FE00D05B11FFCF5309FFCD4D02FFFFFFFF00FFFFFF00FFFFFF00FFFFFE00FFFF
+            FE00FFFFFE00FFFFFE00FFFFFE00DB8748FFD97D3CFFFFFFFE00FFFFFE00D263
+            1AFFD05A10FFCF5308FFFFFFFF00FFFFFF00FFFFFF00FFFFFE00FFFFFE00FFFF
+            FE00FFFFFE00E29E67FFDE9155FFDB8748FFD97E3BFFD6742FFFD46B24FFD262
+            1AFFD05B10FFFFFFFF00FFFFFF00FFFFFF00FFFFFE00FFFFFE00FFFFFE00E6AF
+            80FFE3A672FFE19C63FFDE9256FFDB8748FFD97E3BFFD6742FFFD36B24FFFFFF
+            FE00FFFFFF00FFFFFF00FFFFFF00FFFFFE00FFFFFE00FFFFFE00FFFFFE00E6AF
+            80FFE3A572FFE09B64FFDE9155FFDC8748FFD9803EFFFFFFFE00FFFFFE00FFFF
+            FF00FFFFFF00FFFFFF00FFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00E6AF
+            80FFE3A672FFFFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFF00FFFF
+            FF00FFFFFF00FFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00E7B2
+            84FFFFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFE00FFFFFF00FFFFFF00
+          }
+          TabOrder = 1
+          OnClick = btnResetCalClick
+        end
+        object btnUpdateCal: TBitBtn
+          AnchorSideTop.Control = vleWavelength
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = vleWavelength
+          AnchorSideRight.Side = asrBottom
+          Left = 208
+          Height = 26
+          Top = 182
+          Width = 158
+          Anchors = [akTop]
+          AutoSize = True
+          BorderSpacing.Top = 6
+          BorderSpacing.Right = 6
+          Caption = 'Save to Spectrometer'
+          Enabled = False
+          Glyph.Data = {
+            36040000424D3604000000000000360000002800000010000000100000000100
+            2000000000000004000064000000640000000000000000000000000000001111
+            120093939300E1E1E100FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF001A1A
+            1956363836B711121172FFFFFF00FFFFFF00FFFFFF00FFFFFF00000000001212
+            13009D9D9D00E5E5E500FEFEFE03FEFEFE09B3B1B3251A1A1C6F080808565B5C
+            5CC2FAFBFAFF737272C8050506450B0B0C670101010DFFFFFF00000000080D0C
+            0D64656767897474758A8C8C8C9A888889A1767776D0D6D7D6FFA9A9AAFFC9C9
+            C9FFD4D4D3FFD5D5D3FF9D9E9DFDB2B2B0FF20201F7EFFFFFF000503034A110D
+            0BFE020000FF333030FFA0A0A0FF8E8D8CFF888887FFDFDFDFFFD9D9D9FFB8B7
+            B5FFD4D3D2FFDCDBDAFFD7D7D4FFBEBDBBFF13131363FFFFFF000B0A08601E18
+            15FF1D1412FF595553FFA6A4A3FF2A2423FF797777FFC4C3C2FFB1B0AFFFAFAC
+            ACFF7E7C7BFFB0AEADFFD9D9D9FF959794FF302F2EB20C0C0C340C0A0A5C231C
+            1AFF221A17FF615C5AFFA6A3A2FF453F3DFFDCD8D8FFD3D2D1FFA9A8A8FF6762
+            62FF110905FF5C5756FFD7D6D6FFB6B5B4FFEBE9E6FF4C4A4AC40D0B095C2822
+            1FFF2A211DFF5F5A58FFB6B5B4FF807C7BFFD9D7D7FFDEDDDBFFA1A1A0FF817F
+            7DFF413E3BFF999796FFD4D3D1FFBCBBBAFFA7A6A4E9313131770E0B0B5C2D27
+            24FF382F2AFF38302DFF585655FF63605EFF5F5C5DFFC8C8C7FFAAA9A7FFAAAA
+            A8FFBCBCBCFFDBD8D7FFB3B3AEFFCAC8C7FF3132326FFFFFFF00100D0C5C2F28
+            26FF302927FF2E2826FF25211FFF1C1614FF262323FFBFBDBCFFD5D5D2FFC3C3
+            C1FFAFABABFFCDCDCBFFEEEFEEFFFCFCFAFF31313184FFFFFF00110E0D5C271F
+            1EFF6E6A67FFC8C1BAFFBFB8B2FFB2ABA3FF948B85FFA09B98FF979491FFBBB9
+            BAFFFBFAFBFFD4D5D4FF5A5858FF7E7D7CD663616331FFFFFF00120F0E5C2820
+            1FFF99938FFFFDF4EDFFEAE0DBFFEBE0D9FFE3D6CEFFD3C9C3FFD9CEC9FF9C96
+            93FFC9C8C6FF918F8DFF1C1715FF58545356FFFFFF00FFFFFF0014110F5C2B24
+            22FF97928EFFF9F2ECFFE6E0DAFFE7E1DBFFE6E0DAFFE7E0DBFFE9E2DDFFDFD7
+            D2FFD2CCC5FFA49F9CFF332C2AFF574E4B52FFFFFF00FFFFFF001512115C2F27
+            25FF989694FFFEFCF7FFEDE9E4FFEEEAE5FFEEEAE5FFEEEAE5FFEEE9E5FFEFEA
+            E5FFFFFAF5FFC2C0BCFF393330FF53484453FFFFFF00FFFFFF001513125C332C
+            2AFF999897FFFFFFFFFFF4F1EFFFF5F2F0FFF5F2F0FFF5F2F0FFF5F2F0FFF4F1
+            EFFFFFFDFBFFC2C2C1FF3D3633FF5B4F4B53FFFFFF00FFFFFF001613125E312A
+            29FF9C9C9BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFC6C6C7FF3F3835FF6559545563575300635753001D1A1A51231F
+            1DE8807F7EE1BCBCBCDDB8B7B7DEB8B7B7DEB8B7B7DEB8B7B7DEB8B7B7DEB8B7
+            B7DEB9B8B8DDA3A2A1E346413FEC3E3533433F3735003F373500
+          }
+          TabOrder = 2
+        end
+      end
+    end
+    object tsVersionInfo: TTabSheet
+      Caption = 'Version info'
+      ClientHeight = 289
+      ClientWidth = 375
+      object gbVersionInfo: TGroupBox
+        Left = 0
+        Height = 289
+        Top = 0
+        Width = 375
+        Align = alClient
+        Caption = 'Version info'
+        ClientHeight = 269
+        ClientWidth = 371
+        TabOrder = 0
+        object lblModel: TLabel
+          AnchorSideLeft.Control = lblModTxt
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = gbVersionInfo
+          AnchorSideRight.Control = gbVersionInfo
+          AnchorSideRight.Side = asrBottom
+          Left = 109
+          Height = 15
+          Top = 2
+          Width = 260
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 4
+          BorderSpacing.Around = 2
+          Caption = 'Model'
+        end
+        object lblSerial: TLabel
+          AnchorSideLeft.Control = lblSerTxt
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = lblModel
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = gbVersionInfo
+          AnchorSideRight.Side = asrBottom
+          Left = 109
+          Height = 15
+          Top = 19
+          Width = 260
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 4
+          BorderSpacing.Around = 2
+          Caption = 'Serial'
+        end
+        object lblModTxt: TLabel
+          AnchorSideLeft.Control = gbVersionInfo
+          AnchorSideTop.Control = gbVersionInfo
+          AnchorSideRight.Control = lblSerTxt
+          AnchorSideRight.Side = asrBottom
+          Left = 2
+          Height = 15
+          Top = 2
+          Width = 101
+          Alignment = taRightJustify
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 2
+          BorderSpacing.Top = 2
+          Caption = 'Model:'
+        end
+        object lblSerTxt: TLabel
+          AnchorSideLeft.Control = gbVersionInfo
+          AnchorSideTop.Control = lblModTxt
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = lblHardRevTxt
+          AnchorSideRight.Side = asrBottom
+          Left = 2
+          Height = 15
+          Top = 19
+          Width = 101
+          Alignment = taRightJustify
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 2
+          BorderSpacing.Top = 2
+          Caption = 'Serial Number:'
+        end
+        object lblHardRevTxt: TLabel
+          AnchorSideLeft.Control = gbVersionInfo
+          AnchorSideTop.Control = lblSerTxt
+          AnchorSideTop.Side = asrBottom
+          Left = 2
+          Height = 15
+          Top = 36
+          Width = 101
+          Alignment = taRightJustify
+          BorderSpacing.Left = 2
+          BorderSpacing.Top = 2
+          Caption = 'Hardware Revision:'
+        end
+        object lblHardRev: TLabel
+          AnchorSideLeft.Control = lblHardRevTxt
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = lblHardRevTxt
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = gbVersionInfo
+          AnchorSideRight.Side = asrBottom
+          Left = 109
+          Height = 15
+          Top = 36
+          Width = 260
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 4
+          BorderSpacing.Around = 2
+          Caption = 'Hardware'
+        end
+        object lblSoftRevTxt: TLabel
+          AnchorSideLeft.Control = gbVersionInfo
+          AnchorSideTop.Control = lblHardRevTxt
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = lblHardRevTxt
+          AnchorSideRight.Side = asrBottom
+          Left = 2
+          Height = 15
+          Top = 53
+          Width = 101
+          Alignment = taRightJustify
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 2
+          BorderSpacing.Top = 2
+          Caption = 'Software Revision:'
+        end
+        object lblSoftRev: TLabel
+          AnchorSideLeft.Control = lblSoftRevTxt
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = lblSoftRevTxt
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = gbVersionInfo
+          AnchorSideRight.Side = asrBottom
+          Left = 109
+          Height = 15
+          Top = 53
+          Width = 260
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 4
+          BorderSpacing.Around = 2
+          Caption = 'Software'
+        end
+      end
+    end
+  end
+end

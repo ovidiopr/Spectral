@@ -1,0 +1,9 @@
+Package: spectral
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: @ARCH@
+Depends: libc6
+Maintainer: Ovidio <ovidio@bytesfall.com>
+Description: Spectral application
+ Application for real-time optical spectroscopy.

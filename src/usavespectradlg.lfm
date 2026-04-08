@@ -1,0 +1,505 @@
+object SaveSpectraDlg: TSaveSpectraDlg
+  Left = 878
+  Height = 399
+  Top = 208
+  Width = 444
+  BorderStyle = bsSizeToolWin
+  Caption = 'Spectra saving configuration'
+  ClientHeight = 399
+  ClientWidth = 444
+  Position = poMainFormCenter
+  LCLVersion = '4.4.0.0'
+  OnClose = FormClose
+  OnCreate = FormCreate
+  object ButtonPanel: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 359
+    Width = 432
+    OKButton.Name = 'OKButton'
+    OKButton.Caption = '&Acept'
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.Caption = '&Cancel'
+    TabOrder = 4
+    ShowButtons = [pbOK, pbCancel]
+  end
+  object gbSaveOptions: TGroupBox
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 2
+    Height = 93
+    Top = 2
+    Width = 440
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = True
+    BorderSpacing.Left = 2
+    BorderSpacing.Top = 2
+    BorderSpacing.Right = 2
+    Caption = 'Save options'
+    ClientHeight = 73
+    ClientWidth = 436
+    TabOrder = 0
+    object rbSaveScans: TRadioButton
+      AnchorSideLeft.Control = gbSaveOptions
+      AnchorSideTop.Control = seSaveScans
+      AnchorSideTop.Side = asrCenter
+      Left = 2
+      Height = 19
+      Top = 25
+      Width = 73
+      BorderSpacing.Left = 2
+      Caption = 'Save every'
+      TabOrder = 1
+      OnChange = rbSaveScansChange
+    end
+    object seSaveScans: TSpinEdit
+      AnchorSideLeft.Control = rbSaveScans
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = rbSaveAllScans
+      AnchorSideTop.Side = asrBottom
+      Left = 77
+      Height = 23
+      Top = 23
+      Width = 100
+      BorderSpacing.Left = 2
+      BorderSpacing.Top = 2
+      MaxValue = 1000
+      MinValue = 1
+      TabOrder = 2
+      Value = 1
+      OnChange = seSaveScansChange
+    end
+    object lblSaveScans: TLabel
+      AnchorSideLeft.Control = seSaveScans
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = seSaveScans
+      AnchorSideTop.Side = asrCenter
+      Left = 179
+      Height = 15
+      Top = 27
+      Width = 37
+      BorderSpacing.Left = 2
+      Caption = 'scan(s)'
+      ParentColor = False
+    end
+    object rbSaveAvailScan: TRadioButton
+      AnchorSideTop.Control = seSaveAvailScan
+      AnchorSideTop.Side = asrCenter
+      Left = 0
+      Height = 19
+      Top = 50
+      Width = 175
+      Caption = 'Save first available scan every:'
+      TabOrder = 3
+      OnChange = rbSaveAvailScanChange
+    end
+    object seSaveAvailScan: TFloatSpinEdit
+      AnchorSideLeft.Control = rbSaveAvailScan
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = seSaveScans
+      AnchorSideTop.Side = asrBottom
+      Left = 177
+      Height = 23
+      Top = 48
+      Width = 100
+      Alignment = taRightJustify
+      BorderSpacing.Around = 2
+      DecimalPlaces = 3
+      MaxValue = 1000
+      MinValue = 1
+      TabOrder = 4
+      Value = 1
+      OnChange = seSaveAvailScanChange
+    end
+    object rbSaveAllScans: TRadioButton
+      AnchorSideLeft.Control = gbSaveOptions
+      AnchorSideTop.Control = gbSaveOptions
+      Left = 2
+      Height = 19
+      Top = 2
+      Width = 89
+      BorderSpacing.Left = 2
+      BorderSpacing.Top = 2
+      Caption = 'Save all scans'
+      Checked = True
+      TabOrder = 0
+      TabStop = True
+      OnChange = rbSaveAllScansChange
+    end
+    object pnlUnits: TPanel
+      AnchorSideLeft.Control = seSaveAvailScan
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = seSaveAvailScan
+      AnchorSideTop.Side = asrCenter
+      Left = 279
+      Height = 19
+      Top = 50
+      Width = 59
+      AutoSize = True
+      BorderSpacing.Left = 2
+      BevelOuter = bvNone
+      ClientHeight = 19
+      ClientWidth = 59
+      TabOrder = 5
+      object rbasMS: TRadioButton
+        AnchorSideLeft.Control = pnlUnits
+        AnchorSideTop.Control = pnlUnits
+        Left = 0
+        Height = 19
+        Top = 0
+        Width = 34
+        Caption = 'ms'
+        TabOrder = 0
+        OnChange = rbasMSChange
+      end
+      object rbasS: TRadioButton
+        AnchorSideLeft.Control = rbasMS
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = rbasMS
+        AnchorSideTop.Side = asrCenter
+        Left = 36
+        Height = 19
+        Top = 0
+        Width = 23
+        BorderSpacing.Left = 2
+        Caption = 's'
+        Checked = True
+        TabOrder = 1
+        TabStop = True
+        OnChange = rbasSChange
+      end
+    end
+  end
+  object gbFileOptions: TGroupBox
+    AnchorSideLeft.Control = gbSaveOptions
+    AnchorSideTop.Control = gbStopSaving
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = gbSaveOptions
+    AnchorSideRight.Side = asrBottom
+    Left = 2
+    Height = 93
+    Top = 163
+    Width = 440
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = True
+    Caption = 'File options'
+    ClientHeight = 73
+    ClientWidth = 436
+    TabOrder = 2
+    object lblFileFormat: TLabel
+      AnchorSideLeft.Control = gbFileOptions
+      AnchorSideTop.Control = gbFileOptions
+      Left = 2
+      Height = 15
+      Top = 2
+      Width = 60
+      BorderSpacing.Left = 2
+      BorderSpacing.Top = 2
+      Caption = 'File format:'
+      ParentColor = False
+    end
+    object cbFileFormat: TComboBox
+      AnchorSideLeft.Control = lblFileFormat
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = lblFileFormat
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = gbFileOptions
+      AnchorSideRight.Side = asrBottom
+      Left = 64
+      Height = 23
+      Top = -2
+      Width = 370
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Around = 2
+      ItemHeight = 15
+      Items.Strings = (
+        'XML file'
+        'TXT file'
+      )
+      Style = csDropDownList
+      TabOrder = 0
+      OnChange = cbFileFormatChange
+    end
+    object lblDirectory: TLabel
+      AnchorSideLeft.Control = lblFileFormat
+      AnchorSideTop.Control = deDirectory
+      AnchorSideTop.Side = asrCenter
+      Left = 2
+      Height = 15
+      Top = 27
+      Width = 51
+      Caption = 'Directory:'
+      ParentColor = False
+    end
+    object deDirectory: TDirectoryEdit
+      AnchorSideLeft.Control = lblDirectory
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = cbFileFormat
+      AnchorSideTop.Side = asrBottom
+      AnchorSideRight.Control = cbFileFormat
+      AnchorSideRight.Side = asrBottom
+      Left = 55
+      Height = 23
+      Top = 23
+      Width = 377
+      ShowHidden = False
+      ButtonWidth = 23
+      NumGlyphs = 1
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Around = 2
+      MaxLength = 0
+      TabOrder = 1
+      OnChange = deDirectoryChange
+    end
+    object lblBaseName: TLabel
+      AnchorSideLeft.Control = gbFileOptions
+      AnchorSideTop.Control = txtBaseName
+      AnchorSideTop.Side = asrCenter
+      Left = 2
+      Height = 15
+      Top = 52
+      Width = 60
+      BorderSpacing.Left = 2
+      BorderSpacing.Top = 2
+      Caption = 'Base name:'
+      ParentColor = False
+    end
+    object txtBaseName: TEdit
+      AnchorSideLeft.Control = lblBaseName
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = deDirectory
+      AnchorSideTop.Side = asrBottom
+      AnchorSideRight.Control = gbFileOptions
+      AnchorSideRight.Side = asrBottom
+      Left = 64
+      Height = 23
+      Top = 48
+      Width = 370
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Around = 2
+      TabOrder = 2
+      OnChange = txtBaseNameChange
+    end
+  end
+  object gbSuffix: TGroupBox
+    AnchorSideLeft.Control = gbSaveOptions
+    AnchorSideTop.Control = gbFileOptions
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = gbSaveOptions
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Side = asrBottom
+    Left = 2
+    Height = 45
+    Top = 256
+    Width = 440
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = True
+    Caption = 'Suffix'
+    ClientHeight = 25
+    ClientWidth = 436
+    TabOrder = 3
+    object rbTimeStamp: TRadioButton
+      AnchorSideLeft.Control = gbSuffix
+      AnchorSideTop.Control = gbSuffix
+      Left = 2
+      Height = 19
+      Top = 2
+      Width = 81
+      BorderSpacing.Left = 2
+      BorderSpacing.Top = 2
+      Caption = 'Time stamp'
+      TabOrder = 0
+      OnChange = rbTimeStampChange
+    end
+    object rbFileCounter: TRadioButton
+      AnchorSideLeft.Control = rbTimeStamp
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = rbTimeStamp
+      AnchorSideTop.Side = asrCenter
+      Left = 85
+      Height = 19
+      Top = 2
+      Width = 61
+      BorderSpacing.Left = 2
+      Caption = 'Counter'
+      Checked = True
+      TabOrder = 1
+      TabStop = True
+      OnChange = rbFileCounterChange
+    end
+    object lblPadding: TLabel
+      AnchorSideLeft.Control = rbFileCounter
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = rbTimeStamp
+      AnchorSideTop.Side = asrCenter
+      Left = 161
+      Height = 15
+      Top = 4
+      Width = 79
+      BorderSpacing.Left = 15
+      Caption = 'Padding digits:'
+      ParentColor = False
+    end
+    object sePadding: TSpinEdit
+      AnchorSideLeft.Control = lblPadding
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = rbTimeStamp
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = gbSuffix
+      AnchorSideRight.Side = asrBottom
+      Left = 242
+      Height = 23
+      Top = 0
+      Width = 192
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Around = 2
+      MaxValue = 1000
+      MinValue = 1
+      TabOrder = 2
+      Value = 1
+      OnChange = sePaddingChange
+    end
+  end
+  object lblPreview: TLabel
+    AnchorSideLeft.Control = gbSuffix
+    AnchorSideTop.Control = gbSuffix
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = gbSuffix
+    AnchorSideRight.Side = asrBottom
+    Left = 2
+    Height = 15
+    Top = 303
+    Width = 440
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 2
+    Caption = 'Preview: viewdata_000001.txt'
+    ParentColor = False
+  end
+  object gbStopSaving: TGroupBox
+    AnchorSideLeft.Control = gbSaveOptions
+    AnchorSideTop.Control = gbSaveOptions
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = gbSaveOptions
+    AnchorSideRight.Side = asrBottom
+    Left = 2
+    Height = 68
+    Top = 95
+    Width = 440
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = True
+    Caption = 'Stop saving'
+    ClientHeight = 48
+    ClientWidth = 436
+    TabOrder = 1
+    object seStopScans: TSpinEdit
+      AnchorSideLeft.Control = chbStopScans
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = chbStopScans
+      AnchorSideTop.Side = asrCenter
+      Left = 48
+      Height = 23
+      Top = 0
+      Width = 100
+      BorderSpacing.Left = 2
+      MaxValue = 1000
+      MinValue = 1
+      TabOrder = 1
+      Value = 1
+      OnChange = seStopScansChange
+    end
+    object lblStopScans: TLabel
+      AnchorSideLeft.Control = seStopScans
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = seStopScans
+      AnchorSideTop.Side = asrCenter
+      Left = 150
+      Height = 15
+      Top = 4
+      Width = 37
+      BorderSpacing.Left = 2
+      Caption = 'scan(s)'
+      ParentColor = False
+    end
+    object chbStopScans: TCheckBox
+      AnchorSideLeft.Control = gbStopSaving
+      AnchorSideTop.Control = gbStopSaving
+      Left = 2
+      Height = 19
+      Top = 2
+      Width = 44
+      BorderSpacing.Left = 2
+      BorderSpacing.Top = 2
+      Caption = 'After'
+      TabOrder = 0
+      OnChange = chbStopScansChange
+    end
+    object chbStopTime: TCheckBox
+      AnchorSideLeft.Control = chbStopScans
+      AnchorSideTop.Control = seStopTime
+      AnchorSideTop.Side = asrCenter
+      Left = 2
+      Height = 19
+      Top = 27
+      Width = 44
+      BorderSpacing.Top = 4
+      Caption = 'After'
+      TabOrder = 2
+      OnChange = chbStopTimeChange
+    end
+    object seStopTime: TFloatSpinEdit
+      AnchorSideLeft.Control = chbStopTime
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = seStopScans
+      AnchorSideTop.Side = asrBottom
+      Left = 48
+      Height = 23
+      Top = 25
+      Width = 100
+      Alignment = taRightJustify
+      BorderSpacing.Left = 2
+      BorderSpacing.Top = 2
+      DecimalPlaces = 3
+      MaxValue = 1000
+      MinValue = 1
+      TabOrder = 3
+      Value = 1
+      OnChange = seStopTimeChange
+    end
+    object rbStopMS: TRadioButton
+      AnchorSideLeft.Control = seStopTime
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = seStopTime
+      AnchorSideTop.Side = asrCenter
+      Left = 150
+      Height = 19
+      Top = 27
+      Width = 34
+      BorderSpacing.Left = 2
+      Caption = 'ms'
+      TabOrder = 4
+      OnChange = rbStopMSChange
+    end
+    object rbStopS: TRadioButton
+      AnchorSideLeft.Control = rbStopMS
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = rbStopMS
+      AnchorSideTop.Side = asrCenter
+      Left = 186
+      Height = 19
+      Top = 27
+      Width = 23
+      BorderSpacing.Left = 2
+      Caption = 's'
+      Checked = True
+      TabOrder = 5
+      TabStop = True
+      OnChange = rbStopSChange
+    end
+  end
+end

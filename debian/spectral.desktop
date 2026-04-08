@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Spectral
+Exec=/usr/bin/spectral
+Icon=spectral
+Type=Application
+Categories=Utility;Science;
+Terminal=false
