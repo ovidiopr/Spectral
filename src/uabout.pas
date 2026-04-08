@@ -79,7 +79,7 @@ end;
 procedure TAboutBox.FormCreate(Sender: TObject);
   function OSVersion: String;
   begin
-    {$IFDEF MACOS}
+    {$IFDEF DARWIN}
     Result := 'macOS';
     {$ELSE}
     {$IFDEF LINUX}
