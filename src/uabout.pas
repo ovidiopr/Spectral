@@ -79,17 +79,21 @@ end;
 procedure TAboutBox.FormCreate(Sender: TObject);
   function OSVersion: String;
   begin
-    {$IFDEF LCLcarbon}
-    Result := 'Mac OS';
+    {$IFDEF MACOS}
+    Result := 'macOS';
     {$ELSE}
-    {$IFDEF Linux}
+    {$IFDEF LINUX}
     Result := 'Linux';
+    {$ELSE}
+    {$IFDEF FREEBSD}
+    Result := 'FreeBSD';
     {$ELSE}
     {$IFDEF UNIX}
     Result := 'Unix';
     {$ELSE}
     {$IFDEF WINDOWS}
     Result:= 'Windows';
+    {$ENDIF}
     {$ENDIF}
     {$ENDIF}
     {$ENDIF}
