@@ -63,6 +63,7 @@ Section "!${PRODUCT_NAME}" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite try
   File "..\build\${PRODUCT_ARCH}\${EXE_NAME}"
+  File "..\SeaBreeze\os-support\windows\VisualStudio2013\x64\Release\SeaBreeze.dll"
   CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
   CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXE_NAME}"
   SectionIn RO
@@ -116,6 +117,7 @@ FunctionEnd
 Section Uninstall
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\${EXE_NAME}"
+  Delete "$INSTDIR\SeaBreeze.dll"
 
   Delete "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk"
   Delete "$QUICKLAUNCH\${PRODUCT_NAME}.lnk"
