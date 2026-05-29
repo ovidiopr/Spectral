@@ -84,5 +84,6 @@ build/
 *.dSYM/
 
 # Application bundle for Mac OS
+*.dmg
 *.app/
 .DS_Store
