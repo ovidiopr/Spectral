@@ -6,7 +6,7 @@
 # My own files/dirs
 old/
 test/
-SeaBreeze
+SeaBreeze/
 
 # Node artifact files
 node_modules/
