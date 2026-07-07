@@ -62,7 +62,7 @@ ShowUnInstDetails show
 Section "!${PRODUCT_NAME}" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite try
-  File "..\build\${PRODUCT_ARCH}\${EXE_NAME}"
+  File "..\build\release\${PRODUCT_ARCH}\${EXE_NAME}"
   File ".\SeaBreeze.dll"
   CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
   CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXE_NAME}"
