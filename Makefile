@@ -19,6 +19,7 @@ BUILDDIR       := $(BUILD)/$(TARGETOS)-$(TARGETCPU)
 SEABREEZE_REPO   := https://github.com/ovidiopr/SeaBreeze.git
 SEABREEZE_SRC    := ../SeaBreeze
 SEABREEZE_LIBDIR := $(SEABREEZE_SRC)/lib
+CFLAGS += -I$(SEABREEZE_SRC)/include
 
 ifeq ($(UNAME_S),Darwin)
   SEABREEZE_LIB := libseabreeze.dylib
@@ -68,7 +69,7 @@ seabreeze:
 		git clone $(SEABREEZE_REPO) $(SEABREEZE_SRC); \
 	fi
 	@echo "Building SeaBreeze ($(SEABREEZE_LIB))..."
-	$(MAKE) -C $(SEABREEZE_SRC) CXXFLAGS="-std=gnu++11 -O2 -Wno-error=unused-command-line-argument -Wno-error=misleading-indentation -Wno-unused-command-line-argument -Wno-misleading-indentation"
+	$(MAKE) -C $(SEABREEZE_SRC)
 	@test -f "$(SEABREEZE_LIBDIR)/$(SEABREEZE_LIB)" || \
 		{ echo "ERROR: $(SEABREEZE_LIB) not found in $(SEABREEZE_LIBDIR) after build"; exit 1; }
 

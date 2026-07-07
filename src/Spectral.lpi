@@ -36,7 +36,7 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="..\build\$(TargetOS)-$(TargetCPU)\spectral"/>
+            <Filename Value="..\build\debug\$(TargetOS)-$(TargetCPU)\spectral"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
@@ -78,7 +78,7 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="..\build\$(TargetOS)-$(TargetCPU)\spectral"/>
+            <Filename Value="..\build\release\$(TargetOS)-$(TargetCPU)\spectral"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
@@ -205,7 +205,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="..\build\$(TargetOS)-$(TargetCPU)\spectral"/>
+      <Filename Value="..\build\default\$(TargetOS)-$(TargetCPU)\spectral"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
