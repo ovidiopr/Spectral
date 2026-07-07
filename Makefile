@@ -68,7 +68,7 @@ seabreeze:
 		git clone $(SEABREEZE_REPO) $(SEABREEZE_SRC); \
 	fi
 	@echo "Building SeaBreeze ($(SEABREEZE_LIB))..."
-	$(MAKE) -C $(SEABREEZE_SRC)
+	$(MAKE) -C $(SEABREEZE_SRC) CXXFLAGS="$(CXXFLAGS)"
 	@test -f "$(SEABREEZE_LIBDIR)/$(SEABREEZE_LIB)" || \
 		{ echo "ERROR: $(SEABREEZE_LIB) not found in $(SEABREEZE_LIBDIR) after build"; exit 1; }
 

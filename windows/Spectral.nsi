@@ -63,7 +63,7 @@ Section "!${PRODUCT_NAME}" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite try
   File "..\build\${PRODUCT_ARCH}\${EXE_NAME}"
-  File "..\SeaBreeze\os-support\windows\VisualStudio2013\x64\Release\SeaBreeze.dll"
+  File "windows\SeaBreeze.dll"
   CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
   CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXE_NAME}"
   SectionIn RO
@@ -127,7 +127,7 @@ Section Uninstall
 ; Ask user about configuration files
   MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 \
     "Do you want to delete your configuration and log files?" IDNO skip_cfg
-    RMDir /r "$PROFILE\.chiva"
+    RMDir /r "$PROFILE\.spectral"
   skip_cfg:
   
   RMDir /r "$SMPROGRAMS\${PRODUCT_NAME}"
