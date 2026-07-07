@@ -4,8 +4,8 @@
 !define PRODUCT_NAME "Spectral"
 !define PRODUCT_ARCH "win64-x86_64"
 !define EXE_NAME "${PRODUCT_NAME}.exe"
-!define PRODUCT_VERSION "v1.0.0"
-!define PRODUCT_PUBLISHER "Ovidio Peña Rodríguez"
+!define PRODUCT_VERSION "v1.1.0"
+!define PRODUCT_PUBLISHER "Ovidio PeÃ±a RodrÃ­guez"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${EXE_NAME}"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
@@ -13,7 +13,7 @@
 SetCompressor bzip2
 RequestExecutionLevel admin
 
-BrandingText "© 2020-2026 ${PRODUCT_PUBLISHER}"
+BrandingText "Â© 2020-2026 ${PRODUCT_PUBLISHER}"
 
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"

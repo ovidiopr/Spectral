@@ -1,5 +1,5 @@
 APP            := spectral
-VERSION        := 1.0.0
+VERSION        := 1.1.0
 BUILD          := build/release
 PKGROOT        := $(APP)_$(VERSION)
 DMG_STAGING    := dmg_staging
