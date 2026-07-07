@@ -63,7 +63,7 @@ Section "!${PRODUCT_NAME}" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite try
   File "..\build\${PRODUCT_ARCH}\${EXE_NAME}"
-  File "windows\SeaBreeze.dll"
+  File ".\windows\SeaBreeze.dll"
   CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
   CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXE_NAME}"
   SectionIn RO

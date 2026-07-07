@@ -158,7 +158,7 @@ jobs:
     - name: Build SeaBreeze library
       if: runner.os != 'Windows'
       # Windows gets SeaBreeze.dll from the official installer
-      run: make seabreeze CXXFLAGS="-std=gnu++11 -O2 -Wno-error=unused-command-line-argument -Wno-error=misleading-indentation -Wno-unused-command-line-argument -Wno-misleading-indentation"
+      run: make seabreeze
 
     - name: Get SeaBreeze.dll (Windows)
       if: matrix.os == 'windows-latest'
