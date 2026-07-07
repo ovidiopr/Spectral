@@ -1,0 +1,250 @@
+name: Build and Package Spectral
+
+on:
+  release:
+    types: [published]
+
+# Required to allow the workflow to upload files to the Release page
+permissions:
+  contents: write
+
+env:
+  # Update this variable (and FPC_VER) for new Lazarus releases
+  LAZ_VER: "4.8"
+
+jobs:
+  build:
+    name: Package on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: Spectral-Debian
+            pattern: "*.deb"
+            FPC_VER: "3.2.2-210709"
+            ARCH_VER: "amd64"
+          - os: ubuntu-24.04-arm
+            artifact_name: Spectral-RaspberryPi
+            pattern: "*.deb"
+            FPC_VER: "3.2.3-240813"
+            ARCH_VER: "arm64"
+          - os: macos-latest
+            artifact_name: Spectral-macOS
+            pattern: "*.dmg"
+            FPC_VER: "3.2.4rc1a"
+          - os: windows-latest
+            artifact_name: Spectral-Windows
+            pattern: "windows/*.exe"
+            FPC_VER: "3.2.2"
+
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v5
+
+    # ==========================================
+    # 1. Native Lazarus Installation
+    # ==========================================
+
+    - name: Install Lazarus (Ubuntu, Raspberry Pi)
+      if: runner.os == 'Linux'
+      run: |
+        echo "Downloading Lazarus and FPC..."
+
+        BASE_URL="https://sourceforge.net/projects/lazarus/files/Lazarus%20Linux%20${{ matrix.ARCH_VER }}%20DEB/Lazarus%20${LAZ_VER}"
+
+        wget -q ${BASE_URL}/fpc-laz_${{ matrix.FPC_VER }}_${{ matrix.ARCH_VER }}.deb/download -O fpc-laz_${{ matrix.FPC_VER }}_${{ matrix.ARCH_VER }}.deb
+        wget -q ${BASE_URL}/fpc-src_${{ matrix.FPC_VER }}_${{ matrix.ARCH_VER }}.deb/download -O fpc-src_${{ matrix.FPC_VER }}_${{ matrix.ARCH_VER }}.deb
+        wget -q ${BASE_URL}/lazarus-project_${LAZ_VER}.0-0_${{ matrix.ARCH_VER }}.deb/download -O lazarus-project_${LAZ_VER}_${{ matrix.ARCH_VER }}.deb
+
+        sudo apt-get update
+
+        # Install all Lazarus dependencies, plus libusb-dev (needed to build
+        # SeaBreeze) and patchelf (used by `make package_deb` to set rpath)
+        sudo apt-get install -y \
+          libgtk2.0-dev \
+          libgtk2.0-0 \
+          libglib2.0-0 \
+          libx11-6 \
+          libxext6 \
+          libxrender1 \
+          libcairo2 \
+          libpango-1.0-0 \
+          libpangocairo-1.0-0 \
+          libgdk-pixbuf2.0-0 \
+          libatk1.0-0 \
+          libusb-dev \
+          patchelf
+
+        sudo dpkg -i fpc-laz_${{ matrix.FPC_VER }}_${{ matrix.ARCH_VER }}.deb fpc-src_${{ matrix.FPC_VER }}_${{ matrix.ARCH_VER }}.deb lazarus-project_${LAZ_VER}_${{ matrix.ARCH_VER }}.deb
+        sudo apt-get install -f -y
+
+        which lazbuild || { echo "ERROR: lazbuild not found"; exit 1; }
+
+        # Remove the Lazarus/FPC installer .debs now that they're installed, so
+        # they don't get picked up by the "*.deb" glob when uploading OUR app package
+        rm -f fpc-laz_*.deb fpc-src_*.deb lazarus-project_*.deb
+
+    - name: Install Lazarus (Windows)
+      if: matrix.os == 'windows-latest'
+      shell: powershell
+      run: |
+        $BaseUrl = "https://sourceforge.net/projects/lazarus/files/Lazarus%20Windows%2064%20bits/Lazarus%20${env:LAZ_VER}/lazarus-${env:LAZ_VER}-fpc-${{ matrix.FPC_VER }}-win64.exe"
+        
+        Write-Host "Downloading Lazarus and FPC..."
+        
+        Invoke-WebRequest -Uri "${BaseUrl}/download" -OutFile ".\lazarus-setup.exe" -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::FireFox
+
+        Write-Host "Installing Lazarus..."
+        Start-Process -FilePath ".\lazarus-setup.exe" -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /DIR=C:\lazarus" -Wait -NoNewWindow
+
+        "C:\lazarus" >> $env:GITHUB_PATH
+        "C:\lazarus\fpc\${{ matrix.FPC_VER }}\bin\x86_64-win64" >> $env:GITHUB_PATH
+        Write-Host "Lazarus installation completed"
+
+        # Remove the Lazarus installer now that it's installed, so it doesn't
+        # get picked up by the "*.exe" glob when uploading OUR app installer
+        Remove-Item ".\lazarus-setup.exe" -Force
+
+    - name: Install Lazarus (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        echo "Downloading Lazarus and FPC for macOS..."
+        
+        BASE_URL="https://sourceforge.net/projects/lazarus/files/Lazarus%20macOS%20aarch64/Lazarus%20${LAZ_VER}"
+        FPC_DMG="fpc-${{ matrix.FPC_VER }}.intelarm64-macosx.dmg"
+        LAZ_ZIP="lazarus-darwin-aarch64-${LAZ_VER}.zip"
+        
+        wget -q ${BASE_URL}/${FPC_DMG}/download -O $FPC_DMG
+        wget -q ${BASE_URL}/${LAZ_ZIP}/download -O $LAZ_ZIP
+
+        echo "Installing FPC..."
+        hdiutil attach "$FPC_DMG"
+        PKG_FILE=$(find /Volumes/fpc* -name "*.pkg" -type f 2>/dev/null | head -n 1)
+        [ -z "$PKG_FILE" ] && { echo "No .pkg found"; exit 1; }
+        sudo installer -pkg "$PKG_FILE" -target /
+        hdiutil detach $(df | grep '/Volumes/fpc' | awk '{print $1}')
+
+        echo "Extracting Lazarus..."
+        xattr -cr "$LAZ_ZIP"
+        unzip -q "$LAZ_ZIP" -d "$HOME/lazarus_install"
+
+        # Find the lazarus directory (handle cases where it might be nested)
+        LAZARUS_DIR=$(find "$HOME/lazarus_install" -maxdepth 2 -type d -name lazarus | head -n 1)
+        [ -z "$LAZARUS_DIR" ] && { echo "Lazarus directory not found"; exit 1; }
+        [ ! -d "$LAZARUS_DIR/lcl" ] && { echo "lcl directory not found in $LAZARUS_DIR"; exit 1; }
+
+        # Add lazbuild to PATH
+        echo "$LAZARUS_DIR" >> $GITHUB_PATH
+        echo "LAZARUS_DIR=$LAZARUS_DIR" >> $GITHUB_ENV
+
+        # Add -k-ld_classic to global FPC config
+        sudo bash -c 'echo "-k-ld_classic" >> /etc/fpc.cfg'
+        echo "Updated /etc/fpc.cfg:"
+        cat /etc/fpc.cfg
+
+        # Install libusb (SeaBreeze build dependency); adjust if not needed
+        brew install libusb pkg-config
+
+        # Remove the Lazarus/FPC installer files now that they're installed, so
+        # they don't get picked up by the "*.dmg" glob when uploading OUR app package
+        rm -f "$FPC_DMG" "$LAZ_ZIP"
+
+    # ==========================================
+    # 2. Build SeaBreeze (native C/C++ dependency)
+    # ==========================================
+
+    - name: Build SeaBreeze library
+      if: runner.os != 'Windows'
+      # Windows gets SeaBreeze.dll from the official installer
+      run: make seabreeze
+
+    - name: Get SeaBreeze.dll (Windows)
+      if: matrix.os == 'windows-latest'
+      shell: powershell
+      run: |
+        # We pull the DLL straight out of the official installer
+        $MsiUrl = "https://sourceforge.net/projects/seabreeze/files/SeaBreeze/installers/seabreeze-3.0.11-Setup64.msi/download"
+        Invoke-WebRequest -Uri "${MsiUrl}" -OutFile ".\seabreeze-setup.msi" -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::FireFox
+
+        if (-not (Get-Item seabreeze-setup.msi).Length -or (Get-Item seabreeze-setup.msi).Length -lt 100KB) {
+          Write-Error "Downloaded file doesn't look like a valid MSI (likely got an HTML page). Check the SourceForge URL."
+          exit 1
+        }
+
+        # Administrative install: unpacks the MSI's files without actually installing anything
+        $ExtractDir = "$PWD\seabreeze_extract"
+        msiexec /a "$PWD\seabreeze-setup.msi" /qn TARGETDIR="$ExtractDir"
+        Start-Sleep -Seconds 5   # msiexec /a returns before the background process finishes writing files
+
+        $Dll = Get-ChildItem -Path $ExtractDir -Filter "SeaBreeze.dll" -Recurse | Select-Object -First 1
+        if (-not $Dll) {
+          Write-Error "SeaBreeze.dll not found inside the extracted MSI contents"
+          exit 1
+        }
+
+        # windows/Spectral.nsi bundles this alongside the app binary
+        Copy-Item $Dll.FullName -Destination ".\windows\SeaBreeze.dll"
+        Write-Host "Extracted $($Dll.FullName) -> .\windows\SeaBreeze.dll"
+
+        Remove-Item seabreeze-setup.msi, $ExtractDir -Recurse -Force
+
+    # ==========================================
+    # 3. Fetch Pascal package dependencies via GIT
+    # ==========================================
+    
+    - name: Clone & Register Package Dependencies
+      shell: bash
+      run: |
+        # TODO: this step was copied over from the Digit workflow, which
+        # needed bgrabitmap/bgracontrols/ExtTabCtrls. Replace the list below
+        # with whatever Lazarus/OPM packages Spectral actually depends on
+        # (or delete this step if there are none).
+        mkdir -p ../lazarus-libs
+        cd ../lazarus-libs
+
+        echo "No additional Lazarus package dependencies configured yet - update this step for Spectral."
+
+        # Example (uncomment and adjust as needed):
+        # git clone https://github.com/<org>/<package>.git
+        # lazbuild ${LAZARUS_DIR:+--lazarusdir="$LAZARUS_DIR"} --add-package-link <package>/<package>.lpk
+
+    # ==========================================
+    # 4. Compile and package
+    # ==========================================
+
+    - name: Compile Application
+      run: lazbuild ${LAZARUS_DIR:+--lazarusdir="$LAZARUS_DIR"} --build-mode=Release src/spectral.lpi
+
+    - name: Package Debian (.deb)
+      if: runner.os == 'Linux'
+      run: make package_deb
+
+    - name: Package macOS (.dmg)
+      if: matrix.os == 'macos-latest'
+      run: |
+        export PATH="$LAZARUS_DIR:$PATH"
+        make package_dmg LAZARUS_DIR="$LAZARUS_DIR"
+
+    - name: Package Windows Installer (.exe)
+      if: matrix.os == 'windows-latest'
+      run: |
+        # Install NSIS
+        choco install nsis -y
+        
+        # Add NSIS dir to PATH
+        $env:Path += ";C:\Program Files (x86)\NSIS"
+        
+        # NOTE: windows/Spectral.nsi should bundle windows\SeaBreeze.dll,
+        # extracted from the official installer in the step above.
+        makensis windows/Spectral.nsi
+
+    # ==========================================
+    # 5. Export artifacts to Release
+    # ==========================================
+
+    - name: Upload to GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: ${{ matrix.pattern }}
