@@ -18,19 +18,22 @@
 ## Installation
 
 ### Windows
-* **Installer (.exe):** Download and run the `Spectral_Setup.exe`.
+* **Installer (.exe):** Download and run the [`Install-Spectral-v1.1.0-win64-x86_64.exe`](https://github.com/ovidiopr/Spectral/releases/download/v1.1.0/Install-Spectral-v1.1.0-win64-x86_64.exe).
 * **Drivers:** Ensure you have the SeaBreeze USB drivers (WinUSB or Ocean Optics vendor drivers) installed. The installer provides an option to bundle these.
 
 ### Linux (Debian / Ubuntu / Linux Mint)
-* **Standard Desktop:** Download the `.deb` package and install via:
+* **Standard Desktop:** Download the [`spectral_1.1.0_amd64.deb`](https://github.com/ovidiopr/Spectral/releases/download/v1.1.0/spectral_1.1.0_amd64.deb) package and install via:
     ```bash
-    sudo dpkg -i spectral_amd64.deb
+    sudo dpkg -i spectral_1.1.0_amd64.deb
     ```
-* **Raspberry Pi:** A dedicated ARM-based `.deb` package is available for Raspberry Pi OS (formerly Raspbian).
+* **Raspberry Pi:** A dedicated ARM-based [`spectral_1.1.0_arm64.deb`](https://github.com/ovidiopr/Spectral/releases/download/v1.1.0/spectral_1.1.0_arm64.deb) package is available for Raspberry Pi OS (formerly Raspbian).
+    ```bash
+    sudo dpkg -i spectral_1.1.0_arm64.deb
+    ```
 * **USB Permissions:** To access spectrometers without root, install the included `udev` rules or add your user to the `plugdev` group.
 
 ### macOS
-* **Disk Image (.dmg):** Open the `Spectral.dmg` and drag the application to your **Applications** folder.
+* **Disk Image (.dmg):** Open the [`spectral_1.1.0_aarch64.dmg`](https://github.com/ovidiopr/Spectral/releases/download/v1.1.0/spectral_1.1.0_aarch64.dmg) and drag the application to your **Applications** folder.
 * **Architecture:** Fully compatible with both Intel and Apple Silicon (M1/M2/M3) systems.
 
 ---
