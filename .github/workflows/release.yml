@@ -152,7 +152,33 @@ jobs:
         rm -f "$FPC_DMG" "$LAZ_ZIP"
 
     # ==========================================
-    # 2. Build SeaBreeze (native C/C++ dependency)
+    # 2. Fetch Pascal package dependencies via GIT
+    # ==========================================
+    
+    - name: Clone & Register Package Dependencies
+      shell: bash
+      run: |
+        # Store packages one directory above the workspace so they don't get compiled into artifacts
+        mkdir -p ../lazarus-libs
+        cd ../lazarus-libs
+
+        # Fetch latest source directly from authors (bypassing OPM entirely)
+        git clone https://github.com/bgrabitmap/bgrabitmap.git
+        git clone https://github.com/bgrabitmap/bgracontrols.git
+
+        # Register packages with lazbuild (order matters for dependencies)
+        lazbuild ${LAZARUS_DIR:+--lazarusdir="$LAZARUS_DIR"} --add-package-link bgrabitmap/bgrabitmap/bgrabitmappack.lpk
+        lazbuild ${LAZARUS_DIR:+--lazarusdir="$LAZARUS_DIR"} --add-package-link bgracontrols/bgracontrols.lpk
+
+    # ==========================================
+    # 3. Compile
+    # ==========================================
+
+    - name: Compile Application
+      run: lazbuild ${LAZARUS_DIR:+--lazarusdir="$LAZARUS_DIR"} --build-mode=Release src/spectral.lpi
+
+    # ==========================================
+    # 4. Build SeaBreeze (native C/C++ dependency)
     # ==========================================
 
     - name: Build SeaBreeze library
@@ -191,30 +217,8 @@ jobs:
         Remove-Item seabreeze-setup.msi, $ExtractDir -Recurse -Force
 
     # ==========================================
-    # 3. Fetch Pascal package dependencies via GIT
+    # 5. Package
     # ==========================================
-    
-    - name: Clone & Register Package Dependencies
-      shell: bash
-      run: |
-        # Store packages one directory above the workspace so they don't get compiled into artifacts
-        mkdir -p ../lazarus-libs
-        cd ../lazarus-libs
-
-        # Fetch latest source directly from authors (bypassing OPM entirely)
-        git clone https://github.com/bgrabitmap/bgrabitmap.git
-        git clone https://github.com/bgrabitmap/bgracontrols.git
-
-        # Register packages with lazbuild (order matters for dependencies)
-        lazbuild ${LAZARUS_DIR:+--lazarusdir="$LAZARUS_DIR"} --add-package-link bgrabitmap/bgrabitmap/bgrabitmappack.lpk
-        lazbuild ${LAZARUS_DIR:+--lazarusdir="$LAZARUS_DIR"} --add-package-link bgracontrols/bgracontrols.lpk
-
-    # ==========================================
-    # 4. Compile and package
-    # ==========================================
-
-    - name: Compile Application
-      run: lazbuild ${LAZARUS_DIR:+--lazarusdir="$LAZARUS_DIR"} --build-mode=Release src/spectral.lpi
 
     - name: Package Debian (.deb)
       if: runner.os == 'Linux'
@@ -240,7 +244,7 @@ jobs:
         makensis windows/Spectral.nsi
 
     # ==========================================
-    # 5. Export artifacts to Release
+    # 6. Export artifacts to Release
     # ==========================================
 
     - name: Upload to GitHub Release

@@ -20,6 +20,7 @@ SEABREEZE_REPO   := https://github.com/ovidiopr/SeaBreeze.git
 SEABREEZE_SRC    := ../SeaBreeze
 SEABREEZE_LIBDIR := $(SEABREEZE_SRC)/lib
 CFLAGS += -I$(SEABREEZE_SRC)/include
+CXXFLAGS += -std=c++14 -Wno-error=catch-value -Wno-error=deprecated-declarations -Wno-error=unused-but-set-variable
 
 ifeq ($(UNAME_S),Darwin)
   SEABREEZE_LIB := libseabreeze.dylib
