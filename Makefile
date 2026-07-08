@@ -20,7 +20,6 @@ SEABREEZE_REPO   := https://github.com/ovidiopr/SeaBreeze.git
 SEABREEZE_SRC    := ../SeaBreeze
 SEABREEZE_LIBDIR := $(SEABREEZE_SRC)/lib
 export CFLAGS += -I$(SEABREEZE_SRC)/include
-export CXXFLAGS += -std=c++14 -Wno-error=catch-value -Wno-error=deprecated-declarations -Wno-error=unused-but-set-variable
 
 ifeq ($(UNAME_S),Darwin)
   SEABREEZE_LIB := libseabreeze.dylib
@@ -118,7 +117,7 @@ package_deb:
 	fi
 
 	# Install udev Rules (for spectrometer permissions)
-	cp 99-oceanoptics.rules $(PKGROOT)/etc/udev/rules.d/
+	cp debian/99-oceanoptics.rules $(PKGROOT)/etc/udev/rules.d/
 
 	# Control and Postinst (postinst should run "ldconfig" - needed if the
 	# ld.so.conf.d fallback above was used)
