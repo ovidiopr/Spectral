@@ -190,6 +190,12 @@ package_dmg:
 	# Set the 'Custom Icon' bit on the staging folder
 	SetFile -a C $(STAGING)
 
+	# Strip any quarantine flag
+	xattr -cr $(APP_BUNDLE)
+
+	# Sign the whole bundle as the final step
+	codesign --force --deep --sign - $(APP_BUNDLE)
+
 	# Symbolic link for drag-and-drop
 	ln -s /Applications $(STAGING)/Applications
 
