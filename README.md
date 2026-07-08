@@ -26,7 +26,7 @@
     ```bash
     sudo dpkg -i spectral_1.1.0_amd64.deb
     ```
-* **Raspberry Pi:** Download the dedicated ARM-based [`spectral_1.1.0_arm64.deb`](https://github.com/ovidiopr/Spectral/releases/download/v1.1.0/spectral_1.1.0_arm64.deb) package for Raspberry Pi OS (formerly Raspbian).
+* **Raspberry Pi:** Download the dedicated ARM-based [`spectral_1.1.0_arm64.deb`](https://github.com/ovidiopr/Spectral/releases/download/v1.1.0/spectral_1.1.0_arm64.deb) package for Raspberry Pi OS (formerly Raspbian) and install via:
     ```bash
     sudo dpkg -i spectral_1.1.0_arm64.deb
     ```
